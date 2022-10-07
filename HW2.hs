@@ -1,7 +1,6 @@
 -- CptS 355 - Fall 2022 -- Homework2 - Haskell
 -- Name: Nathanael Ostheller
 
-
 module HW2
      where
 
@@ -23,12 +22,15 @@ insert_tail n item list = reverse (insertHelper n item list [])
                                           | otherwise = insertHelper (n - 1) item iL (i:buf)
                where  revappend [] list = list
                       revappend (x:xs) list = (revappend xs (x:list))
-               
 
 ------------------------------------------------------
 {- P2  game_scores and wins_by_year  -}
 
 -- (a) game_scores – 12%
+game_scores [] name = []
+game_scores list name = foldr hasName [] list
+     where hasName name (x, y) | name == x = True
+                               | otherwise = False
 
 -- (b) wins_by_year – 12%
 
