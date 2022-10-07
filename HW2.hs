@@ -1,6 +1,6 @@
 -- CptS 355 - Fall 2022 -- Homework2 - Haskell
--- Name:
--- Collaborators: 
+-- Name: Nathanael Ostheller
+
 
 module HW2
      where
@@ -8,8 +8,22 @@ module HW2
 {- P1 - insert, insert_tail -}
 
 -- (a) insert – 3%
+insert n item [] | n == 0 = item:[]
+                 | otherwise = []
+insert n item (i:iL) | n == 0 = item:i:iL
+                     | otherwise = i: (insert (n - 1) item iL)
 
 -- (b) insert_tail –  10%
+insert_tail n item []| n == 0 = item:[]
+                     | otherwise = []
+insert_tail n item list = reverse (insertHelper n item list [])
+     where insertHelper n item [] buf | n == 0 = item:buf
+                                      | otherwise = buf
+           insertHelper n item (i:iL) buf | n == 0 = revappend iL (i:(item:buf))
+                                        | otherwise = insertHelper (n - 1) item iL (i:buf)
+               where  revappend [] list = list
+                      revappend (x:xs) list = (revappend xs (x:list))
+               
 
 ------------------------------------------------------
 {- P2  game_scores and wins_by_year  -}
