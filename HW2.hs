@@ -20,7 +20,7 @@ insert_tail n item list = reverse (insertHelper n item list [])
      where insertHelper n item [] buf | n == 0 = item:buf
                                       | otherwise = buf
            insertHelper n item (i:iL) buf | n == 0 = revappend iL (i:(item:buf))
-                                        | otherwise = insertHelper (n - 1) item iL (i:buf)
+                                          | otherwise = insertHelper (n - 1) item iL (i:buf)
                where  revappend [] list = list
                       revappend (x:xs) list = (revappend xs (x:list))
                
