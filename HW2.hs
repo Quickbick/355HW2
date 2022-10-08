@@ -26,16 +26,19 @@ insert_tail n item list = reverse (insertHelper n item list [])
 ------------------------------------------------------
 {- P2  game_scores and wins_by_year  -}
 
---foldr operator base list
-
--- (a) game_scores – 12%
+-- (a) game_scores – 12% 
 game_scores [] name = []
-game_scores list name = foldr (++) [] (map removeName (filter (hasName name) list))
+game_scores list name = map removeName (filter (hasName name) (foldr (++) [] (map removeName list)))
      where hasName name (x,y)| name == x = True
                              | otherwise = False
            removeName (x, y) = y
 
 -- (b) wins_by_year – 12%
+wins_by_year [] = []
+wins_by_year list = map makeTuple list
+     where makeTuple (x, y) = (x , (length  (filter removeLoss y)))
+               where removeLoss (x, (y, z)) | y > z = True
+                                            | otherwise = False
 
 ------------------------------------------------------
 {- P3  sum_nested_int, sum_nested_item, and sum_my_nested -}
