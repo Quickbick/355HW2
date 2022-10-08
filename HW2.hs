@@ -26,11 +26,14 @@ insert_tail n item list = reverse (insertHelper n item list [])
 ------------------------------------------------------
 {- P2  game_scores and wins_by_year  -}
 
+--foldr operator base list
+
 -- (a) game_scores – 12%
 game_scores [] name = []
-game_scores list name = foldr hasName [] list
-     where hasName name (x, y) | name == x = True
-                               | otherwise = False
+game_scores list name = foldr (++) [] (map removeName (filter (hasName name) list))
+     where hasName name (x,y)| name == x = True
+                             | otherwise = False
+           removeName (x, y) = y
 
 -- (b) wins_by_year – 12%
 
