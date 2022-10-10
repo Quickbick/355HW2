@@ -42,6 +42,7 @@ wins_by_year list = map makeTuple list
 
 ------------------------------------------------------
 {- P3  sum_nested_int, sum_nested_item, and sum_my_nested -}
+
 data NestedList  = Item Int 
                  | Array [Int] 
                  deriving (Show, Read, Eq) 
@@ -72,9 +73,28 @@ sum_my_nested list = foldr addNested 0 list
 ------------------------------------------------------
 {- P4  tree_height, create_htree, tree_paths -}
 
+data Tree a = Leaf a | Node a (Tree a) (Tree a) 
+              deriving (Show, Read, Eq) 
+
+data HTree a = HLeaf a | HNode a Int (HTree a) (HTree a) 
+               deriving (Show, Read, Eq) 
+
 -- (a) tree_height - 8%
+tree_height (Leaf x) = 1
+tree_height (Node x (Leaf y) (Leaf z)) = 2
+tree_height (Node x (Leaf y) z) = (tree_height z) + 1
+tree_height (Node x y (Leaf z)) = (tree_height y) + 1
+tree_height (Node x y z) = (max (tree_height y) (tree_height z)) + 1
 
 -- (b) create_htree - 10%
+create_htree (Leaf x) = (HLeaf x)
+create_htree (Node x y z) = (HNode x (tree_height (Node x y z)) (create_htree y) (create_htree z))
 
--- (c) tree_paths - 13%
-
+-- (c) find_paths - 13%
+find_paths (HLeaf x) v | x == v = [[x]]
+                       | otherwise = [[]]
+find_paths (HNode x h y z) v = filter (hasVal v) (createList (HNode x h y z))
+     where hasVal value list | (last list) == value = True
+                             | otherwise = False
+           createList (HLeaf x) = [[x]]
+           createList (HNode x h y z) = (map (x:) (createList y ++ createList z))
