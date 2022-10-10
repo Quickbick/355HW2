@@ -42,12 +42,32 @@ wins_by_year list = map makeTuple list
 
 ------------------------------------------------------
 {- P3  sum_nested_int, sum_nested_item, and sum_my_nested -}
+data NestedList  = Item Int 
+                 | Array [Int] 
+                 deriving (Show, Read, Eq) 
+
+data MyNested  = MyItem Int 
+               | MyArray [MyNested] 
+               deriving (Show, Read, Eq) 
 
 -- (a) sum_nested_int - 8%
+sum_nested_int [] = 0
+sum_nested_int list = foldr addNested 0 list
+     where addNested (Item x) sum = sum + x
+           addNested (Array x) sum = foldr (+) sum x
 
 -- (b) sum_nested_item - 5%
+sum_nested_item [] = (Item 0)
+sum_nested_item list = foldr addNested (Item 0) list
+     where addNested (Item x) (Item sum) = Item (sum + x)
+           addNested (Array x) (Item sum) = Item (foldr (+) sum x)
+
 
 -- (c) sum_my_nested - 12%
+sum_my_nested [] = 0
+sum_my_nested list = foldr addNested 0 list
+     where addNested (MyItem x) sum = sum + x
+           addNested (MyArray x) sum = foldr addNested sum x 
 
 ------------------------------------------------------
 {- P4  tree_height, create_htree, tree_paths -}
